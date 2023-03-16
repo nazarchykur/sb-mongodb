@@ -1,0 +1,1725 @@
+db.student.insertOne({
+    firstName: 'MJey',
+    lastName: 'Jour',
+    email: 'mjay@gmail.com',
+    gender: 'FEMALE',
+    address: {
+        country: 'UA',
+        city: 'Lviv',
+        postCode: '11222'
+    },
+    favoriteSubjects: ["IT"],
+    totalSpentInBooks: 20,
+    created: Date()
+});
+
+
+db.books.insertMany([
+    {"_id": 1, "title": "Unlocking Android", "isbn": "1933988673", "categories": ["Open Source", "Mobile"]},
+    {"_id": 2, "title": "Android in Action, Second Edition", "isbn": "1935182722", "categories": ["Java"]},
+    {"_id": 3, "title": "Specification by Example", "isbn": "1617290084", "categories": ["Software Engineering"]},
+    {"_id": 4, "title": "Flex 3 in Action", "isbn": "1933988746", "categories": ["Internet"]},
+    {"_id": 5, "title": "Flex 4 in Action", "isbn": "1935182420", "categories": ["Internet"]},
+    {"_id": 6, "title": "Collective Intelligence in Action", "isbn": "1933988312", "categories": ["Internet"]},
+    {"_id": 7, "title": "Zend Framework in Action", "isbn": "1933988320", "categories": ["Web Development"]},
+    {"_id": 8, "title": "Flex on Java", "isbn": "1933988797", "categories": ["Internet"]},
+    {"_id": 9, "title": "Griffon in Action", "isbn": "1935182234", "categories": ["Java"]},
+    {"_id": 10, "title": "OSGi in Depth", "isbn": "193518217X", "categories": ["Java"]},
+    {"_id": 11, "title": "Flexible Rails", "isbn": "1933988509", "categories": ["Web Development"]},
+    {"_id": 13, "title": "Hello! Flex 4", "isbn": "1933988762", "categories": ["Internet"]},
+    {"_id": 14, "title": "Coffeehouse", "isbn": "1884777384", "categories": ["Miscellaneous"]},
+    {
+        "_id": 15,
+        "title": "Team Foundation Server 2008 in Action",
+        "isbn": "1933988592",
+        "categories": ["Microsoft .NET"]
+    },
+    {
+        "_id": 16,
+        "title": "Brownfield Application Development in .NET",
+        "isbn": "1933988711",
+        "categories": ["Microsoft"]
+    },
+    {"_id": 17, "title": "MongoDB in Action", "isbn": "1935182870", "categories": ["Next Generation Databases"]},
+    {
+        "_id": 18,
+        "title": "Distributed Application Development with PowerBuilder 6.0",
+        "isbn": "1884777686",
+        "categories": ["PowerBuilder"]
+    },
+    {
+        "_id": 19,
+        "title": "Jaguar Development with PowerBuilder 7",
+        "isbn": "1884777864",
+        "categories": ["PowerBuilder", "Client-Server"]
+    },
+    {"_id": 20, "title": "Taming Jaguar", "isbn": "1884777686", "categories": ["PowerBuilder"]},
+    {
+        "_id": 21,
+        "title": "3D User Interfaces with Java 3D",
+        "isbn": "1884777902",
+        "categories": ["Java", "Computer Graphics"]
+    },
+    {"_id": 22, "title": "Hibernate in Action", "isbn": "193239415X", "categories": ["Java"]},
+    {"_id": 23, "title": "Hibernate in Action (Chinese Edition)", "categories": ["Java"]},
+    {"_id": 24, "title": "Java Persistence with Hibernate", "isbn": "1932394885", "categories": ["Java"]},
+    {"_id": 25, "title": "JSTL in Action", "isbn": "1930110529", "categories": ["Internet"]},
+    {"_id": 26, "title": "iBATIS in Action", "isbn": "1932394826", "categories": ["Web Development"]},
+    {
+        "_id": 27,
+        "title": "Designing Hard Software",
+        "isbn": "133046192",
+        "categories": ["Object-Oriented Programming", "S"]
+    },
+    {"_id": 28, "title": "Hibernate Search in Action", "isbn": "1933988649", "categories": ["Java"]},
+    {"_id": 29, "title": "jQuery in Action", "isbn": "1933988355", "categories": ["Web Development"]},
+    {"_id": 30, "title": "jQuery in Action, Second Edition", "isbn": "1935182323", "categories": ["Java"]}
+]);
+
+
+db.books.find();
+db.books.find({});
+db.books.find({_id: 10});
+db.books.find({categories: 'Java'}, {title: 1, isbn: 1});
+db.books.find({categories: 'Java'}, {categories: 1, title: 1, isbn: 1});
+db.books.find({categories: 'Java'}, {title: 1, isbn: 1, _id: 0});
+
+
+db.student.findOne();
+db.student.findOne({});
+db.student.findOne({_id: ObjectId("6411b3e05d84bc2bba24c161")}, {firstName: 1, email: 1});
+
+db.student.findOne({_id: ObjectId("6411b3e05d84bc2bba24c161")}, {_id: 0, firstName: 1, email: 1});
+db.student.find();
+db.student.find({});
+db.student.find({}, {_id: 0, _class: 0});
+db.student.find({}, {firstName: 1, email: 1})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB Projection                       -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+// MongoDB projection examples
+// We’ll use the following products collection for the projection examples.
+
+db.products.insertMany([
+    {
+        "_id": 1,
+        "name": "xPhone",
+        "price": 799,
+        "releaseDate": ISODate("2011-05-14"),
+        "spec": {"ram": 4, "screen": 6.5, "cpu": 2.66},
+        "color": ["white", "black"],
+        "storage": [64, 128, 256],
+        "inventory": [{qty: 1200, "warehouse": "San Jose"}]
+    },
+    {
+        "_id": 2,
+        "name": "xTablet",
+        "price": 899,
+        "releaseDate": ISODate("2011-09-01"),
+        "spec": {"ram": 16, "screen": 9.5, "cpu": 3.66},
+        "color": ["white", "black", "purple"],
+        "storage": [128, 256, 512],
+        "inventory": [{qty: 300, "warehouse": "San Francisco"}]
+    },
+    {
+        "_id": 3,
+        "name": "SmartTablet",
+        "price": 899,
+        "releaseDate": ISODate("2015-01-14"),
+        "spec": {"ram": 12, "screen": 9.7, "cpu": 3.66},
+        "color": ["blue"],
+        "storage": [16, 64, 128],
+        "inventory": [{qty: 400, "warehouse": "San Jose"}, {qty: 200, "warehouse": "San Francisco"}]
+    },
+    {
+        "_id": 4,
+        "name": "SmartPad",
+        "price": 699,
+        "releaseDate": ISODate("2020-05-14"),
+        "spec": {"ram": 8, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256, 1024],
+        "inventory": [{qty: 1200, "warehouse": "San Mateo"}]
+    },
+    {
+        "_id": 5,
+        "name": "SmartPhone",
+        "price": 599,
+        "releaseDate": ISODate("2022-09-14"),
+        "spec": {"ram": 4, "screen": 5.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256]
+    }
+])
+
+db.products.find({price: 899})
+db.products.find({}, {
+    name: 1,
+    price: 1
+})
+db.products.findOne({}, {
+    name: 1,
+    price: 1
+})
+db.products.find({}, {
+    name: 1,
+    price: 1,
+    _id: 0
+})
+db.products.find({_id: 1}, {
+    releaseDate: 0,
+    spec: 0,
+    storage: 0
+})
+db.products.find({_id: 1}, {
+    name: 1,
+    price: 1,
+    "spec.screen": 1
+})
+
+db.products.find({_id: 1}, {
+    name: 1,
+    price: 1,
+    spec: {screen: 1}
+})
+db.products.find({}, {
+    name: 1,
+    "inventory.qty": 1
+})
+
+db.products.find({}, {
+    name: 1,
+    inventory: {qty: 1}
+})
+
+
+/*
+========================================================================================================================
+==============================  Section 3. Selecting documents using comparison query operators ========================
+========================================================================================================================
+ */
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------        MongoDB $eq                     -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.find({
+    price: {
+        $eq: 899
+    }
+}, {
+    name: 1,
+    price: 1
+})
+db.products.find({
+    price: 899
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    "spec.ram": {
+        $eq: 4
+    }
+},
+    {
+        name: 1,
+        "spec.ram": 1
+    }
+    )
+db.products.find({
+    "spec.ram": {
+        $eq: 4
+    }
+},
+    {
+        name: 1,
+        spec: {ram: 1}
+    }
+    )
+
+db.products.find({
+    color: {
+        $eq: "black"
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+db.products.find({
+    color: "black"
+
+}, {
+    name: 1,
+    color: 1
+})
+
+db.products.find({
+    releaseDate: {
+        $eq: new ISODate("2020-05-14")
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $gt                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    price: {
+        $gt: 699
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    "spec.ram": {
+        $gt: 8
+    }
+}, {
+    name: 1,
+    "spec.ram": 1
+})
+db.products.find({
+    storage: {
+        $gt: 128
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+db.products.find({
+    "releaseDate": {
+        $gt: new ISODate('2015-01-01')
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $gte                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    price: {
+        $gte: 799
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    "spec.screen": {
+        $gte: 9.5
+    }
+}, {
+    name: 1,
+    "spec.screen": 1
+})
+
+db.products.find({
+    storage: {
+        $gte: 512
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+
+db.products.find({
+    "releaseDate": {
+        $gte: new ISODate('2020-05-14')
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $lt                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    price: {
+        $lt: 799
+    }
+}, {
+    name: 1,
+    price: 1
+})
+db.products.find({
+    "spec.screen": {
+        $lt: 7
+    }
+}, {
+    name: 1,
+    "spec.screen": 1
+})
+
+db.products.find({
+    storage: {
+        $lt: 128
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+
+db.products.find({
+    "releaseDate": {
+        $lt: new ISODate('2015-01-01')
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $lte                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    price: {
+        $lte: 799
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    "spec.screen": {
+        $lte: 6.5
+    }
+}, {
+    name: 1,
+    "spec.screen": 1
+})
+db.products.find({
+    storage: {
+        $lte: 64
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+db.products.find({
+    "releaseDate": {
+        $lte: new ISODate('2015-01-14')
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $ne                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    {
+        "_id": 1,
+        "name": "xPhone",
+        "price": 799,
+        "releaseDate": ISODate("2011-05-14"),
+        "spec": {"ram": 4, "screen": 6.5, "cpu": 2.66},
+        "color": ["white", "black"],
+        "storage": [64, 128, 256]
+    },
+    {
+        "_id": 2,
+        "name": "xTablet",
+        "price": 899,
+        "releaseDate": ISODate("2011-09-01"),
+        "spec": {"ram": 16, "screen": 9.5, "cpu": 3.66},
+        "color": ["white", "black", "purple"],
+        "storage": [128, 256, 512]
+    },
+    {
+        "_id": 3,
+        "name": "SmartTablet",
+        "price": 899,
+        "releaseDate": ISODate("2015-01-14"),
+        "spec": {"ram": 12, "screen": 9.7, "cpu": 3.66},
+        "color": ["blue"],
+        "storage": [16, 64, 128]
+    },
+    {
+        "_id": 4,
+        "name": "SmartPad",
+        "price": 699,
+        "releaseDate": ISODate("2020-05-14"),
+        "spec": {"ram": 8, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256, 1024]
+    },
+    {
+        "_id": 5,
+        "name": "SmartPhone",
+        "price": 599,
+        "releaseDate": ISODate("2022-09-14"),
+        "spec": {"ram": 4, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256]
+    },
+    {
+        "_id": 6,
+        "name": "xWidget",
+        "spec": {"ram": 64, "screen": 9.7, "cpu": 3.66},
+        "color": ["black"],
+        "storage": [1024]
+    }
+])
+db.products.find()
+db.products.find({
+    price: {
+        $ne: 899
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    "spec.screen": {
+        $ne: 9.7
+    }
+}, {
+    name: 1,
+    "spec.screen": 1
+})
+db.products.find({
+    storage: {
+        $ne: 128
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+
+db.products.find({
+    releaseDate: {
+        $ne: new ISODate('2015-01-14')
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $in                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    price: {
+        $in: [699, 799]
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    color: {
+        $in: ["black", "white"]
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+db.products.find({
+    color: {
+        $in: [/^g+/, /^w+/]
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $nin                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    price: {
+        $nin: [699, 799]
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    color: {
+        $nin: ["black", "white"]
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+db.products.find({
+    color: {
+        $nin: [/^g+/, /^w+/]
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+
+/*
+========================================================================================================================
+============================     Section 4. Selecting documents using logical query operators    =======================
+========================================================================================================================
+ */
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $and                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    $and: [{
+        price: 899
+    }, {
+        color: {
+            $in: ["white", "black"]
+        }
+    }]
+}, {
+    name: 1,
+    price: 1,
+    color: 1
+})
+
+db.products.find({
+    $and: [{
+        price: 699
+    }, {
+        price: {
+            $exists: true
+        }
+    }]
+}, {
+    name: 1,
+    price: 1,
+    color: 1
+})
+
+db.products.find({
+    price: {
+        $eq: 699,
+        $exists: true
+    }
+}, {
+    name: 1,
+    price: 1,
+    color: 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $or                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    $or: [{
+        price: 799
+    }, {
+        price: 899
+    }]
+}, {
+    name: 1,
+    price: 1
+})
+db.products.find({
+    price: {
+        $in: [799, 899]
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    $or: [
+        {price: {$lt: 699}},
+        {price: {$gt: 799}}
+    ]
+}, {
+    name: 1,
+    price: 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $not                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    {
+        "_id": 1,
+        "name": "xPhone",
+        "price": 799,
+        "releaseDate": ISODate("2011-05-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 6.5, "cpu": 2.66},
+        "color": ["white", "black"],
+        "storage": [64, 128, 256]
+    },
+    {
+        "_id": 2,
+        "name": "xTablet",
+        "price": 899,
+        "releaseDate": ISODate("2011-09-01T00:00:00Z"),
+        "spec": {"ram": 16, "screen": 9.5, "cpu": 3.66},
+        "color": ["white", "black", "purple"],
+        "storage": [128, 256, 512]
+    },
+    {
+        "_id": 3,
+        "name": "SmartTablet",
+        "price": 899,
+        "releaseDate": ISODate("2015-01-14T00:00:00Z"),
+        "spec": {"ram": 12, "screen": 9.7, "cpu": 3.66},
+        "color": ["blue"],
+        "storage": [16, 64, 128]
+    },
+    {
+        "_id": 4,
+        "name": "SmartPad",
+        "price": 699,
+        "releaseDate": ISODate("2020-05-14T00:00:00Z"),
+        "spec": {"ram": 8, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256, 1024]
+    },
+    {
+        "_id": 5,
+        "name": "SmartPhone",
+        "price": 599,
+        "releaseDate": ISODate("2022-09-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256]
+    },
+    {
+        "_id": 6,
+        "name": "xWidget",
+        "spec": {"ram": 64, "screen": 9.7, "cpu": 3.66},
+        "color": ["black"],
+        "storage": [1024]
+    }
+])
+db.products.find()
+
+db.products.find({
+    price: {
+        $not: {
+            $gt: 699
+        }
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: {
+        $lte: 699
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    name: {
+        $not: /^Smart+/
+    }
+}, {
+    name: 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $nor                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.find({
+    $nor: [
+        {price: 899},
+        {color: "gold"}
+    ]
+}, {
+    name: 1,
+    price: 1,
+    color: 1
+})
+
+
+/*
+========================================================================================================================
+============================     Section 5. Selecting documents using element query operators    =======================
+========================================================================================================================
+ */
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $exists                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    {
+        "_id": 1,
+        "name": "xPhone",
+        "price": 799,
+        "releaseDate": ISODate("2011-05-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 6.5, "cpu": 2.66},
+        "color": ["white", "black"],
+        "storage": [64, 128, 256]
+    },
+    {
+        "_id": 2,
+        "name": "xTablet",
+        "price": 899,
+        "releaseDate": ISODate("2011-09-01T00:00:00Z"),
+        "spec": {"ram": 16, "screen": 9.5, "cpu": 3.66},
+        "color": ["white", "black", "purple"],
+        "storage": [128, 256, 512]
+    },
+    {
+        "_id": 3,
+        "name": "SmartTablet",
+        "price": 899,
+        "releaseDate": ISODate("2015-01-14T00:00:00Z"),
+        "spec": {"ram": 12, "screen": 9.7, "cpu": 3.66},
+        "color": ["blue"],
+        "storage": [16, 64, 128]
+    },
+    {
+        "_id": 4,
+        "name": "SmartPad",
+        "price": 699,
+        "releaseDate": ISODate("2020-05-14T00:00:00Z"),
+        "spec": {"ram": 8, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256, 1024]
+    },
+    {
+        "_id": 5,
+        "name": "SmartPhone",
+        "price": 599,
+        "releaseDate": ISODate("2022-09-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256]
+    },
+    {
+        "_id": 6,
+        "name": "xWidget",
+        "spec": {"ram": 64, "screen": 9.7, "cpu": 3.66},
+        "color": ["black"],
+        "storage": [1024]
+    },
+    {
+        "_id": 7,
+        "name": "xReader",
+        "price": null,
+        "spec": {"ram": 64, "screen": 6.7, "cpu": 3.66},
+        "color": ["black", "white"],
+        "storage": [128]
+    }
+])
+db.products.find()
+
+db.products.find(
+    {
+        price: {
+            $exists: true
+        }
+    },
+    {
+        name: 1,
+        price: 1
+    }
+    )
+
+db.products.find({
+    price: {
+        $exists: true,
+        $gt: 699
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: {
+        $exists: false
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $type                   -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    {
+        "_id": 1,
+        "name": "xPhone",
+        "price": "799",
+        "releaseDate": ISODate("2011-05-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 6.5, "cpu": 2.66},
+        "color": ["white", "black"],
+        "storage": [64, 128, 256]
+    },
+    {
+        "_id": 2,
+        "name": "xTablet",
+        "price": NumberInt(899),
+        "releaseDate": ISODate("2011-09-01T00:00:00Z"),
+        "spec": {"ram": 16, "screen": 9.5, "cpu": 3.66},
+        "color": ["white", "black", "purple"],
+        "storage": [128, 256, 512]
+    },
+    {
+        "_id": 3,
+        "name": "SmartTablet",
+        "price": NumberLong(899),
+        "releaseDate": ISODate("2015-01-14T00:00:00Z"),
+        "spec": {"ram": 12, "screen": 9.7, "cpu": 3.66},
+        "color": ["blue"],
+        "storage": [16, 64, 128]
+    },
+    {
+        "_id": 4,
+        "name": "SmartPad",
+        "price": [599, 699, 799],
+        "releaseDate": ISODate("2020-05-14T00:00:00Z"),
+        "spec": {"ram": 8, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256, 1024]
+    },
+    {
+        "_id": 5,
+        "name": "SmartPhone",
+        "price": ["599", 699],
+        "releaseDate": ISODate("2022-09-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256]
+    },
+    {
+        "_id": 6,
+        "name": "xWidget",
+        "spec": {"ram": 64, "screen": 9.7, "cpu": 3.66},
+        "color": ["black"],
+        "storage": [1024]
+    }
+])
+db.products.find()
+
+db.products.find({
+    price: {
+        $type: "string"
+    }
+}, {
+    name: 1,
+    price: 1
+})
+db.products.find({
+    price: {
+        $type: 2
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: {
+        $type: "number"
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: {
+        $type: "array"
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: {
+        $type: ["array", "number"]
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    $and: [{
+        price: {
+            $type: "number"
+        }
+    },
+        {
+            price: {
+                $type: "string"
+            }
+        }]
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    $and: [{
+        price: {
+            $type: "number"
+        }
+    },
+        {
+            price: {
+                $type: "array"
+            }
+        }]
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: {
+        $type: ["number", "string"]
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+
+/*
+========================================================================================================================
+============================     Section 6. Querying arrays    =======================
+========================================================================================================================
+ */
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $size                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.drop()
+db.products.find()
+
+db.products.insertMany([
+    {
+        "_id": 1,
+        "name": "xPhone",
+        "price": 799,
+        "releaseDate": ISODate("2011-05-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 6.5, "cpu": 2.66},
+        "color": ["white", "black"],
+        "storage": [64, 128, 256]
+    },
+    {
+        "_id": 2,
+        "name": "xTablet",
+        "price": 899,
+        "releaseDate": ISODate("2011-09-01T00:00:00Z"),
+        "spec": {"ram": 16, "screen": 9.5, "cpu": 3.66},
+        "color": ["white", "black", "purple"],
+        "storage": [128, 256, 512]
+    },
+    {
+        "_id": 3,
+        "name": "SmartTablet",
+        "price": 899,
+        "releaseDate": ISODate("2015-01-14T00:00:00Z"),
+        "spec": {"ram": 12, "screen": 9.7, "cpu": 3.66},
+        "color": ["blue"],
+        "storage": [16, 64, 128]
+    },
+    {
+        "_id": 4,
+        "name": "SmartPad",
+        "price": 699,
+        "releaseDate": ISODate("2020-05-14T00:00:00Z"),
+        "spec": {"ram": 8, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256, 1024]
+    },
+    {
+        "_id": 5,
+        "name": "SmartPhone",
+        "price": 599,
+        "releaseDate": ISODate("2022-09-14T00:00:00Z"),
+        "spec": {"ram": 4, "screen": 9.7, "cpu": 1.66},
+        "color": ["white", "orange", "gold", "gray"],
+        "storage": [128, 256]
+    },
+    {
+        "_id": 6,
+        "name": "xWidget",
+        "spec": {"ram": 64, "screen": 9.7, "cpu": 3.66},
+        "color": ["black"],
+        "storage": [1024]
+    }
+])
+
+db.products.find()
+
+db.products.find({
+    color: {
+        $size: 2
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+db.products.find({
+    $or: [{
+        color: {
+            $size: 1
+        }
+    },
+        {
+            color: {
+                $size: 2
+            }
+        }
+    ]
+}, {
+    name: 1,
+    color: 1
+})
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $all                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find({
+    color: {
+        $all: ["black", "white"]
+    }
+}, {
+    name: 1,
+    color: 1
+})
+
+db.products.find({
+    $and: [
+        {color: "black"},
+        {color: "white"}
+    ]
+}, {
+    name: 1,
+    color: 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $elemMatch                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.find({
+    storage: {
+        $elemMatch: {
+            $lt: 128
+        }
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+
+db.products.find({
+    price: {
+        $elemMatch: {
+            $gte: 799
+        }
+    }
+}, {
+    name: 1,
+    storage: 1
+})
+
+/*
+========================================================================================================================
+============================     Section 7. Sorting & Limiting    =======================
+========================================================================================================================
+ */
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB sort()                    -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate" : ISODate("2011-05-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 }, "color" : [ "white", "black" ], "storage" : [ 64, 128, 256 ] },
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate" : ISODate("2011-09-01T00:00:00Z"), "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 }, "color" : [ "white", "black", "purple" ], "storage" : [ 128, 256, 512 ] },
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate" : ISODate("2015-01-14T00:00:00Z"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "blue" ], "storage" : [ 16, 64, 128 ] },
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate" : ISODate("2020-05-14T00:00:00Z"), "spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256, 1024 ] },
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599, "releaseDate" : ISODate("2022-09-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256 ] },
+    { "_id" : 6, "name" : "xWidget", "spec" : { "ram" : 64, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "black" ], "storage" : [ 1024 ] },
+    { "_id" : 7, "name" : "xReader", "price" : null, "spec" : { "ram" : 64, "screen" : 6.7, "cpu" : 3.66 }, "color" : [ "black", "white" ], "storage" : [ 128 ] }
+])
+db.products.find()
+
+db.products.find({
+    'price': {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    'price': {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: 1
+})
+
+db.products.find({
+    'price': {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1
+})
+
+db.products.find({
+    'price': {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: 1,
+    name: 1
+})
+
+db.products.find({
+    'price': {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: 1,
+    name: -1
+})
+
+db.products.find({
+    releaseDate: {
+        $exists: 1
+    }
+
+}, {
+    name: 1,
+    releaseDate: 1
+}).sort({
+    releaseDate: 1
+})
+
+db.products.find({
+    releaseDate: {
+        $exists: 1
+    }
+
+}, {
+    name: 1,
+    releaseDate: 1
+}).sort({
+    releaseDate: -1
+})
+
+db.products.find({}, {
+    name: 1,
+    spec: 1
+}).sort({
+    "spec.ram": 1
+})
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB limit()                  -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.find({}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1
+}).limit(1)
+
+db.products.find({}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1,
+    name: 1
+}).limit(1)
+
+db.products.find({}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1,
+    name: 1
+}).skip(2).limit(2)
+
+
+/*
+========================================================================================================================
+============================     Section 8. Updating documents    =======================
+========================================================================================================================
+*/
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB updateOne()                 -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+
+db.products.find()
+
+db.products.updateOne({
+    _id: 1
+}, {
+    $set: {
+        price: 899
+    }
+})
+
+db.products.find({_id: 1})
+db.products.find({ price: 899 }, { name: 1, price: 1 })
+
+db.products.updateOne({ price: 899 }, { $set: { price: null } })
+db.products.find({_id: 1})
+
+db.products.find({ _id: 4 }, { name: 1, spec: 1 })
+
+db.products.updateOne({
+    _id: 4
+}, {
+    $set: {
+        "spec.ram": 16,
+        "spec.screen": 10.7,
+        "spec.cpu": 2.66
+    }
+})
+
+db.products.find({ _id: 4 }, { name: 1, spec: 1 })
+db.products.find({ _id: 4 }, { name: 1, storage: 1 })
+db.products.updateOne(
+    { _id: 4},
+    {
+        $set: {
+            "storage.0": 16,
+            "storage.1": 32
+        }
+    }
+    )
+db.products.find({ _id: 4 }, { name: 1, storage: 1 })
+
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB updateMany()                  -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+db.products.find()
+
+db.products.updateMany(
+    {  price: 899},
+    { $set: {  price: 895 }}
+    )
+
+
+db.products.find({
+    price: 895
+}, {
+    name: 1,
+    price: 1
+})
+
+db.products.find({
+    price: { $gt: 700}
+}, {
+    name: 1,
+    price: 1,
+    spec: 1
+})
+
+db.products.updateMany({
+    price: { $gt: 700}
+}, {
+    $set: {
+        "spec.ram": 32,
+        "spec.screen": 9.8,
+        "spec.cpu": 5.66
+    }
+})
+
+db.products.find(
+    { _id: { $in: [1,2,3]}},
+    { name: 1, storage: 1}
+    )
+
+db.products.updateMany({
+    _id: {
+        $in: [1, 2, 3]
+    }
+}, {
+    $set: {
+        "storage.0": 16,
+        "storage.1": 32
+    }
+})
+
+db.products.find(
+    { _id: { $in: [1,2,3]}},
+    { name: 1, storage: 1}
+)
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $inc                 -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find({_id: 1})
+db.products.updateOne({
+    _id: 1
+}, {
+    $inc: {
+        price: 50
+    }
+})
+
+db.products.updateOne({
+    _id: 1
+}, {
+    $inc: {
+        price: -150
+    }
+})
+
+db.products.updateOne({
+    _id: 1
+}, {
+    $inc: {
+        price: 50,
+        "spec.ram": 4
+    }
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $min                 -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+
+db.products.updateOne({
+    _id: 5
+}, {
+    $min: {
+        price: 699
+    }
+})
+
+db.products.updateOne({
+    _id: 5
+}, {
+    $min: {
+        price: 499
+    }
+})
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $max                 -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.updateOne({
+    _id: 1
+}, {
+    $max: {
+        price: 699
+    }
+})
+
+db.products.updateOne({
+    _id: 1
+}, {
+    $max: {
+        price: 899
+    }
+})
+
+db.products.updateOne({
+    _id: ObjectId("64133a325d000b0a65ea68ea")
+}, {
+    $max: {
+        price: 899
+    }
+})
+
+db.products.find({ _id: ObjectId("64133a325d000b0a65ea68ea") }, { name: 1, price: 1 })
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $mul                  -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $unset                -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+db.products.updateOne({
+    _id: 1
+}, {
+    $unset: {
+        price: ""
+    }
+})
+
+db.products.find({}, { name: 1, price: 1 })
+db.products.find({}, {name: 1, spec: 1})
+db.products.updateMany({}, {
+    $unset: {
+        "spec.ram": ""
+    }
+})
+db.products.find()
+
+db.products.updateMany({}, { $unset: { "storage.0": "" } })
+db.products.updateMany({}, {
+    $unset: {
+        releaseDate: "",
+        spec: ""
+    }
+})
+
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB $rename                 -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    { "_id" : 1, "nmea" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "nmea" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "nmea" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "nmea" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "nmea" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+
+db.products.updateMany({}, {
+    $rename: {
+        nmea: "name"
+    }
+})
+
+db.products.updateOne({_id: 4}, {
+    $set: {
+        name: "SmartPad 2"
+    }
+})
+
+db.products.updateMany({}, {
+    $rename: {
+        "spec.screen": "spec.screenSize"
+    }
+})
+
+db.products.updateOne({
+    _id: 1
+},
+    {
+        $rename: {
+            "spec.cpu": "cpu"
+        }
+    })
+
+db.products.updateOne({
+    _id: 1
+},
+    {
+        $rename: {
+            "cpu": "spec.cpu"
+        }
+    })
+
+db.products.updateOne({
+    _id: 2
+}, {
+    $rename: {
+        "color": "storage"
+    }
+})
+
+db.products.updateOne({
+    _id: 2
+}, {
+    $rename: {
+        "storage": "color"
+}
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+========================================================================================================================
+============================     Section 9. Deleting documents    =======================
+========================================================================================================================
+ */
+
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB deleteOne()                -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+db.products.find()
+
+db.products.deleteOne({ _id: 1 })
+
+db.products.deleteOne({})
+/*
+------------------------------------------------------------------------------------------------------------------------
+-------------------------------       MongoDB deleteMany()                 -----------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+db.products.drop()
+db.products.find()
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+
+db.products.deleteMany({ price: 899 })
+
+db.products.deleteMany({})
+
+db.products.find()

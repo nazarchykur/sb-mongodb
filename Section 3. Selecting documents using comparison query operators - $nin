@@ -1,0 +1,95 @@
+MongoDB $nin: Not In Operator
+
+
+    Summary: 
+        in this tutorial, you’ll learn about the MongoDB $nin (Not In) operator and how to apply it effectively.
+    
+    
+    
+    Introduction to the MongoDB $nin operator
+        The $nin is a query comparison operator that allows you to find documents where:
+            > the value of the field is not equal to any value in an array
+            > or the field does not exist.
+            
+        Here is the syntax of the $nin operator:
+        
+            { field: { $nin: [ <value1>, <value2> ...]} }
+
+        Like the $in operator, the value list (<value1>, <value2>,…) can be a list of literal values or regular expressions.
+        
+    MongoDB $nin operator examples
+        We’ll use this products collections:
+        
+        db.products.insertMany([
+            { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+            { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+            { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+            { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+            { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+         ])
+
+
+    1) Using the MongoDB $nin operator to match values
+        The following query uses the $nin operator to select documents from the products collection whose price is 
+        neither 599 or 799:
+        
+            db.products.find({
+                price: {
+                    $nin: [699, 799]
+                }
+            }, {
+                name: 1,
+                price: 1
+            })
+
+        It returned the following documents:
+            
+            [
+              { _id: 2, name: 'xTablet', price: 899 },
+              { _id: 3, name: 'SmartTablet', price: 899 },
+              { _id: 5, name: 'SmartPhone', price: 599 }
+            ]
+
+
+
+    2) Using the MongoDB $nin operator to match values in an array
+        The following example uses the $nin operator to select documents where the color array doesn’t have an element 
+        that is either "black" or "white":
+        
+            db.products.find({
+                color: {
+                    $nin: ["black", "white"]
+                }
+            }, {
+                name: 1,
+                color: 1
+            })
+
+        The query returned the following documents:
+        
+            [ { _id: 3, name: 'SmartTablet', color: [ 'blue' ] } ]
+
+
+
+    3) Using the MongoDB $nin operator with regular expressions
+        The following query uses the $nin operator to find documents where the color array doesn’t have an element that 
+        matches /^g+/ and /^w+/ regular expression:
+        
+            db.products.find({
+                color: {
+                    $nin: [/^g+/, /^w+/]
+                }
+            }, {
+                name: 1,
+                color: 1
+            })
+
+        It returned the following documents:
+        
+            [ { _id: 3, name: 'SmartTablet', color: [ 'blue' ] } ]
+
+
+
+    Summary
+        > Use the MongoDB $nin operator to select documents where the value of a field is not equal to any values in an array.
+        > The value list can contain literal values or regular expressions.

@@ -1,0 +1,61 @@
+MongoDB CRUD
+
+    
+    This section covers the basics of CRUD operations, including:
+    
+        > Adding new documents to a collection
+        > Selecting documents
+        > Updating existing documents
+        > Removing documents from a collection
+    
+    Section 1. Adding new documents to a collection
+        insertOne() – show you how insert a single document into a collection.
+        insertMany() – learn how to insert multiple documents into a collection.
+        
+    Section 2. Selecting documents
+        findOne() – show you how to query a single document.
+        find() – learn how to query documents from a collection.
+        Projection – guide you on how to specify the fields to return in the matching document.
+        
+    Section 3. Selecting documents using comparison query operators
+        $eq – select documents where the value of a field is equal to a specified value.
+        $gt – select documents where the value of a field is greater than a specified value.
+        $gte – select documents where the value of a field is greater than or equal to a specified value.
+        $lt – select documents where the value of a field is less than a specified value.
+        $lte – select documents where the value of a field is less than or equal to a specified value.
+        $ne – select documents where the value of a field is not equal to a specified value.
+        $in – select documents where the value of a field equals any value in an array
+        $nin – select documents where the value of a field doesn’t equal any value in an array
+        
+    Section 4. Selecting documents using logical query operators
+        $and – show you how to perform a logical AND operator to select documents.
+        $or – guide you on how to perform a logical OR operator to find documents.
+        $not – learn how to perform a logical NOT operator to query documents.
+        $nor – show you how to use the logical NOR operator to select documents.
+        
+    Section 5. Selecting documents using element query operators
+        $exists – select documents where a field exists.
+        $type – select documents where the value of a field is an instance of a BSON type.
+        
+    Section 6. Querying arrays
+        $size – select documents if they have an array field with a specified size.
+        $all – select documents that have an array with all elements specified in a query.
+        $elemMatch – select documents if the element in the array field matches all the specified queries.
+        
+    Section 7. Sorting & Limiting
+        sort() – show you how to sort returned documents by one or more fields in ascending and descending orders.
+        limit() – learn how to specify the number of documents returned by a query.
+    
+    Section 8. Updating documents
+        updateOne() – show you how to update a single document that satisfies a condition.
+        updateMany() – learn how to update multiple documents that match a condition.
+        $inc – increase/decrease field values
+        $min –  update the value of a field to a specified value if the specified value is less than the current value of the field.
+        $max – update the value of a field to a specified value if the specified value is greater than the current value of the field.
+        $mul – multiply the value of a field by a number.
+        $unset – remove one or more fields from a document.
+        $rename – rename a field in a document
+   
+    Section 9. Deleting documents
+        deleteOne() – delete a single document from a collection.
+        deleteMany() – delete all documents that match a condition from a collection.    

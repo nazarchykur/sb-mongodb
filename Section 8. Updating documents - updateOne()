@@ -1,0 +1,229 @@
+MongoDB updateOne
+
+
+    Summary: 
+        in this tutorial, you’ll learn how to use the MongoDB updateOne() method to update the first document in a 
+        collection that matches a condition.
+    
+    
+    
+    Introduction to MongoDB updateOne() method
+        The updateOne() method allows you to update a single document that satisfies a condition.
+        
+        The following shows the syntax of the updateOne() method:
+        
+            db.collection.updateOne(filter, update, options)
+
+        In this syntax:
+            > The filter is a document that specifies the criteria for the update. If the filter matches multiple 
+                documents, then the updateOne() method updates only the first document. If you pass an empty document {} 
+                into the method, it will update the first document returned in the collection.
+            > The update is a document that specifies the change to apply.
+            > The options argument provides some options for updates that won’t be covered in this tutorial.
+        
+        
+        The updateOne() method returns a document that contains some fields. The notable ones are:
+            > The matchedCount returns the number of matched documents.
+            > The modifiedCount returns the number of updated documents. In the case of the updateOne() method, it can 
+                be either 0 or 1.
+        
+        
+        
+    $set operator
+        The $set operator allows you to replace the value of a field with a specified value. The $set operator has the 
+        following syntax:
+        
+            { $set: { <field1>: <value1>, <field2>: <value2>, ...}}
+
+        If the field doesn’t exist, the $set operator will add the new field with the specified value to the document 
+        as long as the new field doesn’t violate a type constraint.
+        
+        If you specify the field with the dot notation e.g., embededDoc.field and the field does not exist, the $set 
+        will create the embedded document (embedded).
+    
+    
+    
+    MongoDB updateOne() method examples
+        We’ll use the following products collection:
+        
+        db.products.insertMany([
+            { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+            { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+            { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+            { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+            { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+         ])
+
+
+
+    1) Using the MongoDB updateOne() method to update a single document
+        The following example uses the updateOne() method to update the price of the document with _id: 1:
+        
+            db.products.updateOne({
+                _id: 1
+            }, {
+                $set: {
+                    price: 899
+                }
+            })
+
+        In this query:
+            > The { _id : 1 } is the filter argument that matches the documents to update. In this example, it matches 
+                the document whose _id is 1.
+            > The { $set: { price: 899 } } specifies the change to apply. It uses the $set operator to set the value of 
+                the price field to 899.
+        
+        The query returns the following result:
+        
+            {
+              acknowledged: true,
+              insertedId: null,
+              matchedCount: 1,
+              modifiedCount: 1,
+              upsertedCount: 0
+            }
+
+        In this result document, the matchedCount indicates the number of matching documents (1) and the modifiedCount 
+        shows the number of the updated documents (1).
+        
+        To verify the update, you can use the findOne() method to retrieve the document _id: 1 as follows:
+        
+            db.products.findOne({ _id: 1 }, { name: 1, price: 1 })
+
+        It returned the following document:
+        
+            { _id: 1, name: 'xPhone', price: 899 }
+
+        As you can see clearly from the output, the price has been updated successfully.
+        
+        
+    
+    2) Using the MongoDB updateOne() method to update the first matching document
+        The following query selects the documents from the products collection in which the value of the price field is 899:
+        
+            db.products.find({ price: 899 }, { name: 1, price: 1 })
+
+        It returned the following documents:
+        
+            [
+              { _id: 1, name: 'xPhone', price: 899 },
+              { _id: 2, name: 'xTablet', price: 899 },
+              { _id: 3, name: 'SmartTablet', price: 899 }
+            ]
+
+        The following example uses the updateOne() method to update the first matching document where the price field is 899:
+        
+            db.products.updateOne({ price: 899 }, { $set: { price: null } })
+
+        It updated one document as shown in the following result:
+        
+            {
+              acknowledged: true,
+              insertedId: null,
+              matchedCount: 1,
+              modifiedCount: 1,
+              upsertedCount: 0
+            }
+
+        If you query the document with _id: 1, you’ll see that its price field is updated:
+        
+            db.products.find({ _id: 1}, { name: 1, price: 1 })
+
+        Output:
+        
+            [ { _id: 1, name: 'xPhone', price: null } ]
+
+
+
+    3) Using the updateOne() method to update embedded documents
+        The following query uses the find() method to select the document with _id: 4:
+        
+            db.products.find({ _id: 4 }, { name: 1, spec: 1 })
+
+        It returned the following document:
+            
+            [
+              {
+                _id: 4,
+                name: 'SmartPad',
+                spec: { ram: 8, screen: 9.7, cpu: 1.66 }
+              }
+            ]
+
+        The following example uses the updateOne() method to update the values of the ram, screen, and cpu fields in 
+        the spec embedded document of the document _id: 4:
+        
+            db.products.updateOne({
+                _id: 4
+            }, {
+                $set: {
+                    "spec.ram": 16,
+                    "spec.screen": 10.7,
+                    "spec.cpu": 2.66
+                }
+            })
+
+        It returned the following document:
+            
+            {
+              acknowledged: true,
+              insertedId: null,
+              matchedCount: 1,
+              modifiedCount: 1,
+              upsertedCount: 0
+            }
+
+        If you query the document with _id 4 again, you’ll see the change:
+        
+            db.products.find({ _id: 4 }, { name: 1, spec: 1 })
+
+        Output:
+        
+            [
+              {
+                _id: 4,
+                name: 'SmartPad',
+                spec: { ram: 16, screen: 10.7, cpu: 2.66 }
+              }
+            ]
+
+
+
+    4) Using the MongoDB updateOne() method to update array elements
+        The following example uses the updateOne() method to update the first and second elements of the storage array 
+        in the document with _id 4:
+        
+            db.products.updateOne(
+             { _id: 4}, 
+             {
+                $set: {
+                    "storage.0": 16,
+                    "storage.1": 32
+                }
+             }
+            )
+
+        Output:
+        
+            {
+              acknowledged: true,
+              insertedId: null,
+              matchedCount: 1,
+              modifiedCount: 1,
+              upsertedCount: 0
+            }
+
+        If you query the document with _id 4 from the products collection, you’ll see that the first and second elements 
+        of the storage array have been updated:
+        
+            db.products.find({ _id: 4 }, { name: 1, storage: 1 });
+
+        Output:
+        
+            [ { _id: 4, name: 'SmartPad', storage: [ 16, 32, 1024 ] } ]
+
+
+
+    Summary
+        > Use the updateOne() method to update the first document within a collection that satisfies a condition.
+        > Use the $set operator to replace the value of a field with a specified value.
